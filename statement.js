@@ -5,14 +5,18 @@ function statement(invoice, plays) {
   statementData.customer = invoice.customer;
   statementData.performances = invoice.performances.map(enrichPerformance);
   return renderPlainText(statementData, plays);
+
+  function enrichPerformance(aPerformance) {
+    const result = Object.assign({}, aPerformance);
+    result.play = playFor(aPerformance);
+    return result;
 }
 
-function enrichPerformance(aPerformance) {
-  const result = Object.assign({}, aPerformance);
-  return result;
-}
+  function playFor(aPerformance) {
+    return plays[aPerformance.playID];
+  }
 
-function renderPlainText(data, plays) {
+  function renderPlainText(data, plays) {
   let result = `Statement for ${data.customer}\n`;
   for (let perf of data.performances) {
     result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
@@ -51,32 +55,28 @@ function renderPlainText(data, plays) {
     return result;
   }
 
-  function playFor(aPerformance) {
-    return plays[aPerformance.playID];
-  }
-
-  function volumeCreditsFor(aPerformance) {
-    let result = 0;
-    result += Math.max(aPerformance.audience - 30, 0);
-    // add extra credit for every ten comedy attendees
+    function volumeCreditsFor(aPerformance) {
+      let result = 0;
+      result += Math.max(aPerformance.audience - 30, 0);
+      // add extra credit for every ten comedy attendees
     if ("comedy" === playFor(aPerformance).type) result += Math.floor(aPerformance.audience / 5);
-    return result;
-  }
-
-  function usd(aNumber) {
-    return new Intl.NumberFormat("en-US",
-      {
-        style: "currency", currency: "USD",
-        minimumFractionDigits: 2
-      }).format(aNumber / 100);
-  }
-
-  function totalVolumeCredits() {
-    let result = 0;
-    for (let perf of data.performances) {
-      result += volumeCreditsFor(perf);
+      return result;
     }
-    return result;
+
+    function usd(aNumber) {
+      return new Intl.NumberFormat("en-US",
+        {
+          style: "currency", currency: "USD",
+          minimumFractionDigits: 2
+        }).format(aNumber / 100);
+    }
+
+    function totalVolumeCredits() {
+      let result = 0;
+      for (let perf of data.performances) {
+        result += volumeCreditsFor(perf);
+      }
+      return result;
+    }
   }
 }
-
