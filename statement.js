@@ -1,6 +1,17 @@
 module.exports = statement;
 
 function statement(invoice, plays) {
+  let totalAmount = 0;
+  let result = `Statement for ${invoice.customer}\n`;
+  for (let perf of invoice.performances) {
+    // print line for this order
+    result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
+    totalAmount += amountFor(perf);
+  }
+  result += `Amount owed is ${usd(totalAmount)}\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
+  return result;
+
   function amountFor(aPerformance) {
     let result = 0;
     switch (playFor(aPerformance).type) {
@@ -50,16 +61,5 @@ function statement(invoice, plays) {
     }
     return volumeCredits;
   }
-
-  let totalAmount = 0;
-  let result = `Statement for ${invoice.customer}\n`;
-  for (let perf of invoice.performances) {
-    // print line for this order
-    result += `  ${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`;
-    totalAmount += amountFor(perf);
-  }
-  result += `Amount owed is ${usd(totalAmount)}\n`;
-  result += `You earned ${totalVolumeCredits()} credits\n`;
-  return result;
 }
 
