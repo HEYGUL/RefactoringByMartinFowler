@@ -1,0 +1,17 @@
+{
+  "name": "refactoringbymartinfowler",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Example programs to explore and understand Refactoring book by M. Fowler",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "test": "mosic test",
+    "test:watch": "mosic test --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mosic": "1.2.0"
+  }
+}
