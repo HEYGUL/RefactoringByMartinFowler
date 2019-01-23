@@ -75,7 +75,7 @@ function statement(invoice, plays) {
     function totalVolumeCredits() {
       let result = 0;
       for (let perf of data.performances) {
-        result += volumeCreditsFor(perf);
+        result += perf.volumeCredits;
       }
       return result;
     }
