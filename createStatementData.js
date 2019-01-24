@@ -47,7 +47,7 @@ function createStatementData(invoice, plays) {
     const result = Object.assign({}, aPerformance);
     result.play = calculator.play;
     result.amount = calculator.amount;
-    result.volumeCredits = volumeCreditsFor(result);
+    result.volumeCredits = calculator.volumeCredits;
     return result;
   }
   function playFor(aPerformance) {
@@ -58,8 +58,5 @@ function createStatementData(invoice, plays) {
   }
   function totalAmount(data) {
     return data.performances.reduce((total, p) => total + p.amount, 0);
-  }
-  function volumeCreditsFor(aPerformance) {
-    return new PerformanceCalculator(aPerformance, playFor(aPerformance)).volumeCredits;
   }
 }
