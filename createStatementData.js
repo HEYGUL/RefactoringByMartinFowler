@@ -60,9 +60,6 @@ function createStatementData(invoice, plays) {
     return data.performances.reduce((total, p) => total + p.amount, 0);
   }
   function volumeCreditsFor(aPerformance) {
-    let result = 0;
-    result += Math.max(aPerformance.audience - 30, 0);
-    if ("comedy" === aPerformance.play.type) result += Math.floor(aPerformance.audience / 5);
-    return result;
+    return new PerformanceCalculator(aPerformance, playFor(aPerformance)).volumeCredits;
   }
 }
